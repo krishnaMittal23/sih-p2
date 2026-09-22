@@ -511,3 +511,41 @@ tr:hover td {
   box-shadow: 0 0 8px #f43f5e;
   z-index: 10;
 }
+
+/* ------------------------------------------------------------------ */
+/* Spin animation — used by RefreshCw icon in MoscaSimulator           */
+/* ------------------------------------------------------------------ */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+  display: inline-block;
+}
+
+/* ------------------------------------------------------------------ */
+/* Fade-in animation — smooth card/content appearance                  */
+/* ------------------------------------------------------------------ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.35s ease forwards;
+}
+
+/* ------------------------------------------------------------------ */
+/* Scan progress pulse — animated bar used in ScanConsole logs         */
+/* ------------------------------------------------------------------ */
+@keyframes scanPulse {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+.scan-pulse {
+  animation: scanPulse 1.5s ease-in-out infinite;
+}

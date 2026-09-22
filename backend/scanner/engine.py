@@ -75,6 +75,15 @@ PATTERN_RULES = [
         "criticality": Criticality.HIGH
     },
     {
+        "name": "AES-128-CBC (Java SecretKeySpec 16-byte)",
+        "pattern": r"(?:Cipher\.getInstance\s*\(\s*[\"']AES/(?:CBC|ECB|GCM|CTR)[^\"']*[\"']|SecretKeySpec\s*\([^,]+,\s*0,\s*16\s*,\s*[\"']AES[\"'])",
+        "type": CryptoType.SYMMETRIC,
+        "algo_default": "AES-128",
+        "key_group_indices": [],
+        "default_key_size": 128,
+        "criticality": Criticality.HIGH
+    },
+    {
         "name": "AES-256 Encryption",
         "pattern": r"(?:crypto\.createCipheriv\s*\(\s*[\"']aes-256-(?:gcm|cbc|ctr|ecb)[\"']|EVP_aes_256_(?:gcm|cbc|ctr|ecb)|aes256\.NewCipher|AesManaged.*?KeySize\s*=\s*256|Cipher\.getInstance\s*\(\s*[\"']AES/(?:CBC|ECB|GCM)/.*?[\"'].*?256|AES-256)",
         "type": CryptoType.SYMMETRIC,
@@ -214,6 +223,20 @@ IGNORE_DIRS = {
     "__pycache__", ".idea", ".vscode", "vendor", "target", ".next"
 }
 
+# Comment-line prefixes to skip (avoids false positives from commented-out code)
+COMMENT_PREFIXES = ("#", "//", "*", "/*", "*/", "\"\"\"", "'\"'")
+
+def _is_comment_or_doc_line(line_clean: str) -> bool:
+    """Return True if the line is a pure comment, docstring, or doc line."""
+    stripped = line_clean.lstrip()
+    for prefix in ("#", "//", "*", "/*", "*/"):
+        if stripped.startswith(prefix):
+            return True
+    # Python docstring lines (inside triple-quote blocks)
+    if stripped.startswith('"""') or stripped.startswith("'''"):
+        return True
+    return False
+
 def scan_file_for_artefacts(file_path: str, base_dir: str) -> List[CryptographicArtefact]:
     artefacts = []
     rel_path = os.path.relpath(file_path, base_dir).replace("\\", "/")
@@ -224,9 +247,18 @@ def scan_file_for_artefacts(file_path: str, base_dir: str) -> List[Cryptographic
     except Exception:
         return artefacts
 
+    # Per-file deduplication: track (algo, key_size) -> hit count
+    # Allow at most MAX_HITS_PER_ALGO distinct hits per algo per file
+    MAX_HITS_PER_ALGO = 2
+    algo_hit_count: dict = {}
+
     for line_idx, line in enumerate(lines, start=1):
         line_clean = line.strip()
         if not line_clean or len(line_clean) > 800:
+            continue
+
+        # Skip pure comment / docstring lines to reduce false-positives
+        if _is_comment_or_doc_line(line_clean):
             continue
             
         for rule in PATTERN_RULES:
@@ -243,12 +275,36 @@ def scan_file_for_artefacts(file_path: str, base_dir: str) -> List[Cryptographic
                         pass
                 
                 algo = rule["algo_default"]
-                if "1024" in line and "RSA" in algo:
-                    key_size = 1024
-                elif "2048" in line and "RSA" in algo:
-                    key_size = 2048
-                elif "4096" in line and "RSA" in algo:
-                    key_size = 4096
+                # Refine RSA key size from line content
+                if "RSA" in algo:
+                    if "1024" in line:
+                        key_size = 1024
+                    elif "4096" in line:
+                        key_size = 4096
+                    elif "3072" in line:
+                        key_size = 3072
+                    elif "2048" in line:
+                        key_size = 2048
+
+                # Refine AES key size from SecretKeySpec byte count (Java pattern)
+                if "AES" in algo:
+                    aes_key_match = re.search(r'SecretKeySpec\s*\([^,]+,\s*0,\s*(\d+)', line, re.IGNORECASE)
+                    if aes_key_match:
+                        byte_count = int(aes_key_match.group(1))
+                        key_size = byte_count * 8  # bytes -> bits
+                        if key_size == 128:
+                            algo = "AES-128"
+                        elif key_size == 192:
+                            algo = "AES-192"
+                        elif key_size == 256:
+                            algo = "AES-256"
+
+                # Enforce per-file dedup limit
+                dedup_key = (algo, key_size)
+                current_count = algo_hit_count.get(dedup_key, 0)
+                if current_count >= MAX_HITS_PER_ALGO:
+                    break  # Skip this algo — already captured enough occurrences in this file
+                algo_hit_count[dedup_key] = current_count + 1
 
                 q_status, q_threat, risk_score = evaluate_quantum_risk_for_artefact(
                     algo, key_size, rule["criticality"]

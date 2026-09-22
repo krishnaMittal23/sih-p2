@@ -11,7 +11,7 @@ import {
 
 export default function ScanConsole({ onScanComplete, isLoading, setIsLoading }) {
   const [activeMode, setActiveMode] = useState('demo')
-  const [localPath, setLocalPath] = useState('c:\\Projects\\sih\\backend\\samples')
+  const [localPath, setLocalPath] = useState('P:\\SIH_2\\sih-p2\\backend\\samples')
   const [remoteHost, setRemoteHost] = useState('google.com')
   const [remotePort, setRemotePort] = useState(443)
   const [logs, setLogs] = useState([])

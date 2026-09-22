@@ -2,6 +2,7 @@ import json
 import urllib.request
 import urllib.error
 import sys
+import datetime
 
 def create_local_opener():
     proxy_handler = urllib.request.ProxyHandler({})
@@ -11,6 +12,7 @@ def run_e2e_tests():
     opener = create_local_opener()
     backend_url = "http://127.0.0.1:8000"
     frontend_url = "http://127.0.0.1:5173"
+    current_year = datetime.datetime.now().year
     results = []
 
     print("--- [E2E STEP 1] Verifying Backend Health ---")
