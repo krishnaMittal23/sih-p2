@@ -31,9 +31,9 @@ export default function ExecutiveDashboard({ scanResult, onNavigate }) {
   const qvi = summary.quantum_vulnerability_index || 0
 
   const getQviColor = (val) => {
-    if (val >= 75) return 'var(--accent-rose)'
-    if (val >= 45) return 'var(--accent-amber)'
-    return 'var(--accent-emerald)'
+    if (val >= 75) return 'var(--red)'
+    if (val >= 45) return 'var(--red)'
+    return 'var(--green)'
   }
 
   const circumference = 2 * Math.PI * 65
@@ -83,50 +83,50 @@ export default function ExecutiveDashboard({ scanResult, onNavigate }) {
         </div>
       )}
 
-      <div className="grid-cols-4" style={{ marginBottom: '1.5rem' }}>
-        <div className="card">
+      <div className="bento-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="card col-span-3 fade-in">
           <div className="card-title">
             <Layers size={18} color="var(--accent-cyan)" /> Total Artefacts
           </div>
-          <div className="metric-stat" style={{ color: 'var(--accent-cyan)' }}>
+          <div className="metric-stat" style={{ color: 'var(--green)' }}>
             {summary.total_artefacts}
           </div>
           <div className="metric-sub">Catalogued in CBOM inventory</div>
         </div>
 
-        <div className="card">
+        <div className="card col-span-3 fade-in">
           <div className="card-title">
             <ShieldAlert size={18} color="var(--accent-rose)" /> Shor Exposed (Asym)
           </div>
-          <div className="metric-stat" style={{ color: 'var(--accent-rose)' }}>
+          <div className="metric-stat" style={{ color: 'var(--red)' }}>
             {summary.shor_exposure_count}
           </div>
           <div className="metric-sub">Vulnerable to polynomial-time break</div>
         </div>
 
-        <div className="card">
+        <div className="card col-span-3 fade-in">
           <div className="card-title">
             <AlertTriangle size={18} color="var(--accent-amber)" /> Grover Weakened (Sym)
           </div>
-          <div className="metric-stat" style={{ color: 'var(--accent-amber)' }}>
+          <div className="metric-stat" style={{ color: 'var(--red)' }}>
             {summary.grover_exposure_count}
           </div>
           <div className="metric-sub">Effective bit security halved</div>
         </div>
 
-        <div className="card">
+        <div className="card col-span-3 fade-in">
           <div className="card-title">
             <ShieldCheck size={18} color="var(--accent-emerald)" /> Quantum Safe Ready
           </div>
-          <div className="metric-stat" style={{ color: 'var(--accent-emerald)' }}>
+          <div className="metric-stat" style={{ color: 'var(--green)' }}>
             {summary.quantum_safe_count}
           </div>
           <div className="metric-sub">NIST PQC & 256-bit compliant</div>
         </div>
       </div>
 
-      <div className="grid-cols-3" style={{ marginBottom: '1.5rem' }}>
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+      <div className="bento-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="card col-span-4 fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
           <div className="card-title" style={{ alignSelf: 'flex-start' }}>
             <Cpu size={18} color="var(--accent-cyan)" /> Quantum Vulnerability Index
           </div>
@@ -157,7 +157,7 @@ export default function ExecutiveDashboard({ scanResult, onNavigate }) {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card col-span-4 fade-in">
           <div className="card-title">
             <Lock size={18} color="var(--accent-purple)" /> Top Cryptographic Algorithms
           </div>
@@ -185,22 +185,22 @@ export default function ExecutiveDashboard({ scanResult, onNavigate }) {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card col-span-4 fade-in">
           <div className="card-title">
             <Clock size={18} color="var(--accent-amber)" /> Mosca's Parameters
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '0.5rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Data Shelf-Life (X):</span>
-              <span style={{ fontWeight: 600, color: 'var(--accent-blue)' }}>{mosca_analysis.data_shelf_life_x} yrs</span>
+              <span style={{ fontWeight: 600, color: 'var(--green)' }}>{mosca_analysis.data_shelf_life_x} yrs</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Migration Time (Y):</span>
-              <span style={{ fontWeight: 600, color: 'var(--accent-amber)' }}>{mosca_analysis.migration_time_y} yrs</span>
+              <span style={{ fontWeight: 600, color: 'var(--red)' }}>{mosca_analysis.migration_time_y} yrs</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>CRQC Horizon (Z):</span>
-              <span style={{ fontWeight: 600, color: 'var(--accent-rose)' }}>Year {mosca_analysis.crqc_year_z}</span>
+              <span style={{ fontWeight: 600, color: 'var(--red)' }}>Year {mosca_analysis.crqc_year_z}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '0.5rem' }}>
               <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>HNDL Exposure:</span>

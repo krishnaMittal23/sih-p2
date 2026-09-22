@@ -61,8 +61,8 @@ export default function ExportCompliance({ scanResult }) {
         </p>
       </div>
 
-      <div className="grid-cols-3" style={{ marginBottom: '1.5rem' }}>
-        <div className="card">
+      <div className="bento-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="card col-span-4 fade-in">
           <div className="card-title">
             <FileJson size={18} color="var(--accent-cyan)" /> CycloneDX 1.6 CBOM
           </div>
@@ -79,7 +79,7 @@ export default function ExportCompliance({ scanResult }) {
           </a>
         </div>
 
-        <div className="card">
+        <div className="card col-span-4 fade-in">
           <div className="card-title">
             <FileSpreadsheet size={18} color="var(--accent-emerald)" /> Asset Inventory CSV
           </div>
@@ -96,7 +96,7 @@ export default function ExportCompliance({ scanResult }) {
           </a>
         </div>
 
-        <div className="card">
+        <div className="card col-span-4 fade-in">
           <div className="card-title">
             <FileText size={18} color="var(--accent-purple)" /> Executive Quantum Report
           </div>
@@ -114,7 +114,7 @@ export default function ExportCompliance({ scanResult }) {
         </div>
       </div>
 
-      <div className="card">
+      <div className="card fade-in">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
           <div className="card-title" style={{ margin: 0 }}>
             <ShieldCheck size={18} color="var(--accent-cyan)" /> CycloneDX 1.6 CBOM Preview

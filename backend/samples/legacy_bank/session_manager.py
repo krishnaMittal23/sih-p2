@@ -1,7 +1,7 @@
 """
 LEGACY BANK SESSION MANAGER — National Trust Reserve Bank
 Customer Web Portal Session Infrastructure v2.1
-⚠️ NTRO ECDAT Demo Target: Legacy Session & Auth Cryptographic Assets
+⚠️ NTRO ECDAT Target: Legacy Session & Auth Cryptographic Assets
 """
 import hashlib
 import ssl

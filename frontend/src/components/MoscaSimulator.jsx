@@ -63,8 +63,8 @@ export default function MoscaSimulator({ scanResult, onUpdateScanResult }) {
         </p>
       </div>
 
-      <div className="grid-cols-3" style={{ marginBottom: '1.5rem' }}>
-        <div className="card" style={{ gridColumn: 'span 2' }}>
+      <div className="bento-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="card col-span-8 fade-in">
           <div className="card-title">
             <Clock size={18} color="var(--accent-amber)" /> Timeline Parameters
           </div>
@@ -79,12 +79,12 @@ export default function MoscaSimulator({ scanResult, onUpdateScanResult }) {
               </div>
               <input
                 type="range"
+                className="slider-blue"
                 min="1"
                 max="20"
                 step="0.5"
                 value={shelfLifeX}
                 onChange={(e) => setShelfLifeX(parseFloat(e.target.value))}
-                style={{ width: '100%', accentColor: 'var(--accent-blue)', cursor: 'pointer' }}
               />
             </div>
 
@@ -97,12 +97,12 @@ export default function MoscaSimulator({ scanResult, onUpdateScanResult }) {
               </div>
               <input
                 type="range"
+                className="slider-amber"
                 min="0.5"
                 max="10"
                 step="0.5"
                 value={migrationY}
                 onChange={(e) => setMigrationY(parseFloat(e.target.value))}
-                style={{ width: '100%', accentColor: 'var(--accent-amber)', cursor: 'pointer' }}
               />
             </div>
 
@@ -115,12 +115,12 @@ export default function MoscaSimulator({ scanResult, onUpdateScanResult }) {
               </div>
               <input
                 type="range"
+                className="slider-rose"
                 min="2027"
                 max="2040"
                 step="1"
                 value={crqcYearZ}
                 onChange={(e) => setCrqcYearZ(parseInt(e.target.value, 10))}
-                style={{ width: '100%', accentColor: 'var(--accent-rose)', cursor: 'pointer' }}
               />
             </div>
 
@@ -137,7 +137,7 @@ export default function MoscaSimulator({ scanResult, onUpdateScanResult }) {
           </div>
         </div>
 
-        <div className="card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+        <div className="card col-span-4 fade-in" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
           <div className="card-title">
             <Info size={18} color="var(--accent-cyan)" /> Mathematical Evaluation
           </div>
@@ -174,7 +174,7 @@ export default function MoscaSimulator({ scanResult, onUpdateScanResult }) {
         </div>
       </div>
 
-      <div className="card">
+      <div className="card fade-in">
         <div className="card-title">
           <Calendar size={18} color="var(--accent-cyan)" /> Quantum Timeline Visualization (2026 - 2045)
         </div>

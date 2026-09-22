@@ -1,6 +1,6 @@
 # NTRO Enterprise Platform — TLS & Cipher Configuration
 # Infrastructure Layer: Load Balancers, API Gateways, Message Brokers
-# ⚠️ ECDAT Demo Target: Config-level cryptographic asset detection
+# ⚠️ ECDAT Target: Config-level cryptographic asset detection
 
 server:
   tls:

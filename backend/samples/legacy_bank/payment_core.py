@@ -1,7 +1,7 @@
 """
 LEGACY BANK CORE — National Trust Reserve Bank
 Payment Processing Infrastructure v1.4.2 (circa 2008)
-⚠️ NTRO ECDAT Demo Target: Legacy Cryptographic Asset Repository
+⚠️ NTRO ECDAT Target: Legacy Cryptographic Asset Repository
 """
 import hashlib
 import ssl

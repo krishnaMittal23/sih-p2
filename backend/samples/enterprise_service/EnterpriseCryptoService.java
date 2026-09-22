@@ -11,7 +11,7 @@ import javax.crypto.spec.IvParameterSpec;
 /**
  * Enterprise Cryptographic Service — NTRO Enterprise Identity Platform v3.2
  * Handles authentication, key agreement, and payload encryption.
- * ⚠️ ECDAT Demo Target: Enterprise-tier cryptographic asset inventory.
+ * ⚠️ ECDAT Target: Enterprise-tier cryptographic asset inventory.
  */
 public class EnterpriseCryptoService {
 

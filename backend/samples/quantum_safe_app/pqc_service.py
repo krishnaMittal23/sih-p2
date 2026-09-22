@@ -1,7 +1,7 @@
 """
 NTRO Quantum-Safe Cryptographic Service — v1.0.0 (Post-Quantum Ready)
 Implements NIST-standardized PQC algorithms for next-generation infrastructure.
-⚠️ ECDAT Demo Target: Quantum-safe reference implementation.
+⚠️ ECDAT Target: Quantum-safe reference implementation.
 """
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.hazmat.primitives import hashes, serialization

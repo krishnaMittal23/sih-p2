@@ -94,8 +94,10 @@ def health_check():
 def get_pqc_kb():
     return PQC_KNOWLEDGE_BASE
 
+@app.get("/api/scan/bundled")
+@app.get("/api/scan/samples")
 @app.get("/api/scan/demo")
-def run_demo_scan(
+def run_bundled_scan(
     data_shelf_life_x: float = 10.0,
     migration_time_y: float = 3.0,
     crqc_year_z: int = 2030

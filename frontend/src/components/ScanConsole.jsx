@@ -10,7 +10,7 @@ import {
 } from 'lucide-react'
 
 export default function ScanConsole({ onScanComplete, isLoading, setIsLoading }) {
-  const [activeMode, setActiveMode] = useState('demo')
+  const [activeMode, setActiveMode] = useState('bundled')
   const [localPath, setLocalPath] = useState('P:\\SIH_2\\sih-p2\\backend\\samples')
   const [remoteHost, setRemoteHost] = useState('google.com')
   const [remotePort, setRemotePort] = useState(443)
@@ -22,7 +22,7 @@ export default function ScanConsole({ onScanComplete, isLoading, setIsLoading })
     setLogs((prev) => [...prev, `[${time}] ${msg}`])
   }
 
-  const handleRunDemo = async () => {
+  const handleRunBundledScan = async () => {
     setIsLoading(true)
     setErrorMsg('')
     setLogs([])
@@ -30,8 +30,8 @@ export default function ScanConsole({ onScanComplete, isLoading, setIsLoading })
     addLog('Cataloguing source files across Python, Java, and Go modules...')
 
     try {
-      const res = await fetch('/api/scan/demo')
-      if (!res.ok) throw new Error('Failed to run demo scan')
+      const res = await fetch('/api/scan/bundled')
+      if (!res.ok) throw new Error('Failed to run scan')
       const data = await res.json()
       addLog(`Discovered ${data.summary.total_artefacts} cryptographic artefacts.`)
       addLog(`Computed Quantum Vulnerability Index (QVI): ${data.summary.quantum_vulnerability_index}`)
@@ -118,54 +118,42 @@ export default function ScanConsole({ onScanComplete, isLoading, setIsLoading })
 
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
         <button
-          className={`btn-secondary ${activeMode === 'demo' ? 'active' : ''}`}
-          onClick={() => setActiveMode('demo')}
-          style={{
-            borderColor: activeMode === 'demo' ? 'var(--accent-cyan)' : 'var(--border-subtle)',
-            background: activeMode === 'demo' ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255,255,255,0.04)'
-          }}
+          className={`btn-secondary ${activeMode === 'bundled' ? 'active' : ''}`}
+          onClick={() => setActiveMode('bundled')}
         >
-          <Server size={16} color="var(--accent-cyan)" /> 1-Click Bundled Demo
+          <Server size={16} /> 1-Click Bundled Scan
         </button>
         <button
           className={`btn-secondary ${activeMode === 'local' ? 'active' : ''}`}
           onClick={() => setActiveMode('local')}
-          style={{
-            borderColor: activeMode === 'local' ? 'var(--accent-cyan)' : 'var(--border-subtle)',
-            background: activeMode === 'local' ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255,255,255,0.04)'
-          }}
         >
-          <FolderSearch size={16} color="var(--accent-blue)" /> Local Directory / Repo
+          <FolderSearch size={16} /> Local Directory / Repo
         </button>
         <button
           className={`btn-secondary ${activeMode === 'remote' ? 'active' : ''}`}
           onClick={() => setActiveMode('remote')}
-          style={{
-            borderColor: activeMode === 'remote' ? 'var(--accent-cyan)' : 'var(--border-subtle)',
-            background: activeMode === 'remote' ? 'rgba(6, 182, 212, 0.15)' : 'rgba(255,255,255,0.04)'
-          }}
         >
-          <Globe size={16} color="var(--accent-purple)" /> Remote TLS Endpoint
+          <Globe size={16} /> Remote TLS Endpoint
         </button>
       </div>
 
-      <div className="grid-cols-2" style={{ marginBottom: '1.5rem' }}>
-        <div className="card">
-          {activeMode === 'demo' && (
+      <div className="bento-grid" style={{ marginBottom: '1.5rem' }}>
+        <div className="card col-span-6 fade-in">
+          {activeMode === 'bundled' && (
             <div>
               <div className="card-title">
-                <Server size={18} color="var(--accent-cyan)" /> Bundled Enterprise Repository
+                <Server size={18} color="var(--green)" /> Bundled Enterprise Repository
               </div>
               <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '1.25rem' }}>
                 Pre-configured multi-tier enterprise codebase containing legacy banking modules (RSA-1024, DES, MD5, TLS 1.0), intermediate enterprise services (ECDSA, AES-128, SHA-256), and modern quantum-safe hybrid services (ML-KEM, ML-DSA).
               </p>
               <button
                 className="btn-primary"
-                onClick={handleRunDemo}
+                onClick={handleRunBundledScan}
                 disabled={isLoading}
                 style={{ width: '100%' }}
               >
-                <Play size={16} /> {isLoading ? 'Scanning Enterprise Assets...' : 'Run 1-Click Demo Scan'}
+                <Play size={16} /> {isLoading ? 'Scanning Enterprise Assets...' : 'Run 1-Click Scan'}
               </button>
             </div>
           )}
@@ -202,7 +190,7 @@ export default function ScanConsole({ onScanComplete, isLoading, setIsLoading })
           {activeMode === 'remote' && (
             <form onSubmit={handleRunRemoteScan}>
               <div className="card-title">
-                <Globe size={18} color="var(--accent-purple)" /> Inspect Remote TLS Endpoint
+                <Globe size={18} color="var(--green)" /> Inspect Remote TLS Endpoint
               </div>
               <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.25rem' }}>
                 <div style={{ flex: 3 }}>
@@ -243,15 +231,15 @@ export default function ScanConsole({ onScanComplete, isLoading, setIsLoading })
           )}
 
           {errorMsg && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--accent-rose)', fontSize: '0.85rem', marginTop: '1rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--red)', fontSize: '0.85rem', marginTop: '1rem' }}>
               <AlertCircle size={16} /> {errorMsg}
             </div>
           )}
         </div>
 
-        <div className="card" style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="card col-span-6 fade-in" style={{ display: 'flex', flexDirection: 'column' }}>
           <div className="card-title">
-            <Terminal size={18} color="var(--accent-emerald)" /> Live Engine Telemetry
+            <Terminal size={18} color="var(--green)" /> Live Engine Telemetry
           </div>
           <div
             className="code-box"

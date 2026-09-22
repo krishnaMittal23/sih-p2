@@ -40,7 +40,7 @@ export default function PQCAdvisor({ scanResult }) {
           </div>
         ) : (
           recommendations.map((rec, idx) => (
-            <div key={idx} className="card" style={{ borderLeft: '4px solid var(--accent-cyan)' }}>
+            <div key={idx} className="card fade-in" style={{ borderLeft: '4px solid var(--accent-cyan)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <span

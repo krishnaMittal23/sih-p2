@@ -19,20 +19,20 @@ import PQCAdvisor from './components/PQCAdvisor'
 import ExportCompliance from './components/ExportCompliance'
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard')
+  const [activeTab, setActiveTab] = useState('scan')
   const [scanResult, setScanResult] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [backendOnline, setBackendOnline] = useState(false)
 
   useEffect(() => {
-    const checkHealthAndLoadDemo = async () => {
+    const checkHealthAndLoadData = async () => {
       try {
         const healthRes = await fetch('/api/health')
         if (healthRes.ok) {
           setBackendOnline(true)
-          const demoRes = await fetch('/api/scan/demo')
-          if (demoRes.ok) {
-            const data = await demoRes.json()
+          const res = await fetch('/api/scan/bundled')
+          if (res.ok) {
+            const data = await res.json()
             setScanResult(data)
           }
         }
@@ -40,73 +40,85 @@ export default function App() {
         console.error('Backend offline or starting up', err)
       }
     }
-    checkHealthAndLoadDemo()
+    checkHealthAndLoadData()
   }, [])
 
   return (
     <div className="app-container">
-      <header className="navbar">
+      {/* Sidebar Navigation */}
+      <aside className="sidebar">
         <div className="nav-brand">
-          <div className="nav-badge-ntro">NTRO</div>
+          <div className="nav-badge-ntro">NTRO Certified</div>
           <div className="nav-title-group">
-            <h1>ECDAT <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'var(--accent-cyan)' }}>Enterprise Cryptographic Discovery & Analysis</span></h1>
-            <p>National Technical Research Organisation &bull; Post-Quantum Preparedness & CBOM</p>
+            <h1>ECDAT <span>Enterprise Cryptographic Discovery</span></h1>
+            <p>Post-Quantum Preparedness & CBOM Platform</p>
           </div>
         </div>
+
+        <nav className="nav-tabs">
+          <button
+            className={`nav-tab-btn ${activeTab === 'scan' ? 'active' : ''}`}
+            onClick={() => setActiveTab('scan')}
+          >
+            <Search size={18} /> Discovery & Scan
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <Activity size={18} /> Executive Posture
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === 'cbom' ? 'active' : ''}`}
+            onClick={() => setActiveTab('cbom')}
+          >
+            <Layers size={18} /> CBOM Inventory
+            {scanResult && (
+              <span style={{ 
+                marginLeft: 'auto', 
+                background: 'rgba(255,255,255,0.1)', 
+                padding: '0.15rem 0.5rem', 
+                borderRadius: '9999px', 
+                fontSize: '0.7rem' 
+              }}>
+                {scanResult.artefacts.length}
+              </span>
+            )}
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === 'mosca' ? 'active' : ''}`}
+            onClick={() => setActiveTab('mosca')}
+          >
+            <Clock size={18} /> Mosca Simulator
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === 'pqc' ? 'active' : ''}`}
+            onClick={() => setActiveTab('pqc')}
+          >
+            <Zap size={18} /> NIST PQC Advisor
+          </button>
+          <button
+            className={`nav-tab-btn ${activeTab === 'export' ? 'active' : ''}`}
+            onClick={() => setActiveTab('export')}
+          >
+            <Download size={18} /> Export Center
+          </button>
+        </nav>
 
         <div className="nav-status">
           <div className="status-pill">
-            <span className="pulse-dot" style={{ background: backendOnline ? 'var(--accent-emerald)' : 'var(--accent-rose)' }} />
-            <span>{backendOnline ? 'Engine Online (CycloneDX 1.6)' : 'Connecting Engine...'}</span>
+            <span className="pulse-dot" style={{ background: backendOnline ? 'var(--green)' : 'var(--red)' }} />
+            <span>{backendOnline ? 'Engine Online' : 'Connecting...'}</span>
           </div>
           <div className="status-pill">
-            <Cpu size={14} color="var(--accent-cyan)" />
+            <Cpu size={14} color="var(--green)" />
             <span>NIST FIPS 203/204/205</span>
           </div>
         </div>
-      </header>
+      </aside>
 
-      <nav className="nav-tabs">
-        <button
-          className={`nav-tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveTab('dashboard')}
-        >
-          <Activity size={16} /> Executive Posture
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'scan' ? 'active' : ''}`}
-          onClick={() => setActiveTab('scan')}
-        >
-          <Search size={16} /> Discovery & Scan
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'cbom' ? 'active' : ''}`}
-          onClick={() => setActiveTab('cbom')}
-        >
-          <Layers size={16} /> CBOM Asset Inventory
-          {scanResult && <span style={{ background: 'rgba(255,255,255,0.1)', padding: '0.1rem 0.4rem', borderRadius: '4px', fontSize: '0.7rem' }}>{scanResult.artefacts.length}</span>}
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'mosca' ? 'active' : ''}`}
-          onClick={() => setActiveTab('mosca')}
-        >
-          <Clock size={16} /> Mosca's Theorem Simulator
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'pqc' ? 'active' : ''}`}
-          onClick={() => setActiveTab('pqc')}
-        >
-          <Zap size={16} /> NIST PQC Advisor
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'export' ? 'active' : ''}`}
-          onClick={() => setActiveTab('export')}
-        >
-          <Download size={16} /> Export & Compliance
-        </button>
-      </nav>
-
-      <main className="main-content">
+      {/* Main Content Area */}
+      <main className="main-content fade-in">
         {activeTab === 'dashboard' && (
           <ExecutiveDashboard
             scanResult={scanResult}
