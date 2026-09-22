@@ -184,6 +184,7 @@ cd frontend
 npm install
 ```
 
+
 Launch the Vite development server:
 ```bash
 npm run dev -- --host 127.0.0.1 --port 5173
